@@ -29,8 +29,11 @@ The database schema for this project is defined in the above ER-Daigram file. It
 
 ## User Interface
 
+Mobile view 
 ![iPhone 14 Pro - 2](https://github.com/kgchinthana/Oxi-Crop-Science/assets/119396480/ad209f32-a083-431e-a285-276112ca49a9)
 ![iPhone 14 Pro - 1](https://github.com/kgchinthana/Oxi-Crop-Science/assets/119396480/0623b90d-bdfd-4cae-ba7b-08ee68fa0696)
+
+Desktop view
 ![Frame 5019](https://github.com/kgchinthana/Oxi-Crop-Science/assets/119396480/40c27cdf-50f9-45b8-9c7c-deac23045cc3)
 ![Frame 5018](https://github.com/kgchinthana/Oxi-Crop-Science/assets/119396480/c8558efa-5a30-4104-a17a-96528320c208)
 
