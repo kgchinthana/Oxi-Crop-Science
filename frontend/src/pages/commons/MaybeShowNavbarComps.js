@@ -14,7 +14,8 @@ const MaybeShowNavbarComp = ({ children }) => {
     const shouldHideNavbar = pathPatternsToHideNavbar.some(pattern =>
       pattern.test(location.pathname)
     );
-    setShowNavbar(!shouldHideNavbar);
+
+    setShowNavbar(!shouldHideNavbar );
   }, [location]);
 
   return <>{showNavbar && children}</>;

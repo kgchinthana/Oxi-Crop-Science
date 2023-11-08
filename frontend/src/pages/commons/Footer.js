@@ -58,7 +58,7 @@ const Footer = () => (
 
         <div className="footer-copyright text-center py-3">
           © 2023 Copyright:
-          <a href="/"> CarCare360</a>
+          <a href="/"> Oxi Crop Science (pvt)Ltd</a>
         </div>
       </footer>
     </Container>

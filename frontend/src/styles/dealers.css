@@ -1,0 +1,23 @@
+.dealers__container {
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    margin-top: 8%;
+    border-radius: 10px;
+    height: 100%;
+    padding: 2%;
+  }
+  
+  
+  .dealers__img {
+    width: 100%;
+    margin-top: 2%;
+    padding: 1%;
+    border-radius: 10px;
+  }
+
+
+  .dealers__details{
+    margin-top: 5%;
+    margin-left: 2%;
+    padding: 1%;
+  }
+  
