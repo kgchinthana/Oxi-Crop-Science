@@ -1,8 +1,8 @@
 h2 {
-    padding-bottom: 15px;
+    padding-bottom: 5%;
   }
   .cdGroup {
-    padding-bottom: 10px;
+    padding-bottom: 8%;
     border-width: 0px;
   }
   .card {
@@ -15,23 +15,24 @@ h2 {
     margin-bottom: 20px !important;
     border-radius: 20px !important;
     background-color: #188fff13 !important;
+    width: 100%;
+
   }
   .card:hover {
     transform: scale(1.05);
-  
     transition-duration: 0.5s;
     background-color: #188fff28 !important;
   }
   .card-text {
     color: rgba(0, 0, 0, 0.6);
-    font-size: 16px;
+    font-size: 1em;
     padding: 10px;
     width: 100%;
     position: relative;
   }
   .cardText {
     color: rgba(0, 0, 0, 0.6);
-    font-size: 16px;
+    font-size: 0.8em;
   }
   .card-body {
     padding: 10px !important;

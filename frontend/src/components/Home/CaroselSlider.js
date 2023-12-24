@@ -21,11 +21,17 @@ export default function CarouselSlider() {
               Oxi Crop Science is spearheading innovation and growth
             </div>
             <div className='container'>
-                <form class = "d-flex">
-                    <input className = "form-control me-2 transparent-input" type = "search " placeholder = "Enter your search and press enter" aria-label = "Search" />
-                    <button className = "btn btn-outline-info" type = "submit">Search</button>
-                </form>
-              
+              <form className='d-flex'>
+                <input
+                  className='form-control me-2 transparent-input'
+                  type='search'
+                  placeholder='Enter your search and press enter'
+                  aria-label='Search'
+                />
+                <button className='btn btn-outline-info' type='submit'>
+                  Search
+                </button>
+              </form>
             </div>
           </div>
         </div>

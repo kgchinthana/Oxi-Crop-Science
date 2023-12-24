@@ -1,8 +1,6 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import swal from 'sweetalert';
-import ReCAPTCHA from 'react-google-recaptcha';
 import {
   Container,
   Row,
@@ -10,13 +8,11 @@ import {
   Form,
   Button,
   InputGroup,
-  Modal,
 } from 'react-bootstrap';
 
 const Staff = () => {
   // Get the current URL using the useLocation hook to hide modal in customer dashboard
   const location = useLocation();
-  const isModalVisible = !location.pathname.startsWith('/CustomerDashboard/');
   //form validation
   const [validated, setValidated] = useState(false);
 
@@ -38,10 +34,6 @@ const Staff = () => {
   //triggers when submit button clicked
   const handleSubmit = (e) => {};
 
-  const [show, setShow] = useState(true);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   function getCurrentDate() {
     const today = new Date();

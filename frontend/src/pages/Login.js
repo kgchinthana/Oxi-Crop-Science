@@ -1,203 +1,205 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import "../styles/login.css";
-import login from "../components/images/login.jpg";
-import swal from "sweetalert";
-
-import { GoogleLogin } from "react-google-login";
-import {
-  TextField,
-  Grid,
-  Container,
-  MenuItem,
-  InputLabel,
-  FormControl,
-  Select,
-  InputAdornment,
-  Button,
-  Alert,
-  Snackbar,
-} from "@mui/material";
-import { Image } from "react-bootstrap";
-
-const clientId =
-  "790433585929-p9slfbpl44uau7urp5tu91b5h5trl21j.apps.googleusercontent.com";
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import '../styles/login.css';
+import login from '../components/images/login.jpg';
+import swal from 'sweetalert';
+import { gapi } from 'gapi-script';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { GoogleLogin } from 'react-google-login';
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [open, setOpen] = React.useState(false);
-  const [textInputErrorMessageEmail, setTextInputErrorMessageEmail] =
-    useState(null);
+  const [validated, setValidated] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  useState(null);
+  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+
+  axios.defaults.withCredentials = true;
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('rememberedEmail');
+    if (storedEmail) {
+      setEmail(storedEmail);
+      setRememberMe(true);
+    }
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:4000/api/authentication/login",
-        {
-          email,
-          password,
-        }
-      );
-      console.log(response.data, "Login Success");
-      if (response.data) {
-        setOpen(true);
-        localStorage.setItem("token", response.data.token);
-        setEmail("");
-        setPassword("");
-        navigate("/signup");
-        window.location.reload();
-      }
-    } catch (error) {
-      swal("Invalid Credential!", "", "error"); // Show success message
-      setEmail("");
-      setPassword("");
-    }
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
-
-  const onSuccess = (res) => {
-    console.log("LOGIN SUCCESS! Current user: ", res.profileobj);
-  };
-
-  const onFailure = (res) => {
-    console.log("LOGIN FAILED! res: ", res);
-  };
-
-  const handleEmailChange = (e) => {
-    const inputValue = e.target.value;
-
-    // Regular expression to allow integers, alphabets and special characters
-    const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
-
-    // Check if the input matches the pattern or is empty
-    if (emailRegex.test(inputValue) || inputValue !== " ") {
-      setEmail(inputValue);
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      setValidated(true);
     } else {
-      setTextInputErrorMessageEmail("*Please enter a valid email address");
+      setValidated(false);
+
+      e.preventDefault();
+      try {
+        const response = await axios.post(
+          'http://localhost:4000/api/authentication/login',
+          {
+            email: email,
+            password: password,
+          }
+        );
+        console.log('Login Success');
+        console.log(response.data);
+        if (response.data) {
+          localStorage.setItem('token', response.data.token);
+          if (rememberMe) {
+            localStorage.setItem('rememberedEmail', email);
+          } else {
+            localStorage.removeItem('rememberedEmail');
+          }
+          setEmail('');
+          setPassword('');
+          navigate('/signup');
+          if (response.data.success) {
+            console.log(response.data.Role);
+            if (response.data.role === 'admin') {
+              navigate('/Admindashboard');
+            } else if (response.data.role == 'maintenancemanager') {
+              navigate('/MaintananceManagerDashboard');
+            } else if (response.data.role == 'marketingmanager') {
+              navigate('/sendEmail');
+            } else {
+              navigate('/signup');
+            }
+          }
+        } else {
+          console.log('Login Error');
+          swal('Invalid Credential!', '', 'error');
+          setEmail('');
+          setPassword('');
+        }
+      } catch (error) {
+        console.log(error);
+        swal('Invalid Credential!', '', 'error');
+        setEmail('');
+        setPassword('');
+      }
     }
   };
+
   return (
     <Container>
-      <div className="login__customer__container ">
-        <Grid container spacing={2}>
+      <div className='login__customer__container '>
+        <Row container spacing={2}>
           {/* Left side with register customer image */}
-          <Grid item xs={12} md={6}>
-            <div className="login__customer__img">
-              <Image src={login} fluid alt="login" />
+          <Col item xs={12} md={6}>
+            <div className='login__customer__img'>
+              <img src={login}></img>
             </div>
-          </Grid>
+          </Col>
 
           {/* Right side with form components */}
-          <Grid item xs={12} md={6}>
+          <Col item xs={12} md={6}>
+            <h2
+              data-testid='cypress-title'
+              className='login__customer__heading'
+            >
+              {' '}
+              Login{' '}
+            </h2>
+
             {/* Form */}
-            <div className="login__customer__form">
-              <form onSubmit={handleLogin}>
-                <Grid item xs={12}>
-                  {/* Heading */}
-                  <div className="login__customer__heading">
-                    <h2>Login</h2>
-                  </div>
-                </Grid>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    {/* Email */}
-                    <TextField
-                      className="input-text-login"
-                      id="outlined-basic"                        
-                      label="Email"
-                      variant="outlined"
+            <div className='login__customer__form'>
+              <Form
+                noValidate
+                validated={validated}
+                onSubmit={handleLogin}
+                className='text-left'
+              >
+                <Row className=' pb-2'>
+                  <Form.Group as={Col} controlId='formGridEmail'>
+                    <Form.Label className='d-flex justify-content-start'>
+                      Email
+                    </Form.Label>
+                    <Form.Control
+                      type='email'
+                      pattern='[^@\s]+@[^@\s]+\.[^@\s]+'
+                      placeholder='Enter Email'
+                      required
                       value={email}
-                      type="text"
-                      helperText={textInputErrorMessageEmail}
-                      onChange={handleEmailChange}
-                      size="small"
-                      style={{ width: "80%" }}
+                      width={100}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />{' '}
+                    <Form.Control.Feedback type='invalid'>
+                      *Please enter a valid E-mail
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+
+                <Row className=' pb-2'>
+                  <Form.Group as={Col} controlId='formGridpassword'>
+                    <Form.Label className='d-flex justify-content-start'>
+                      Password
+                    </Form.Label>
+                    <Form.Control
+                      type='password'
                       required
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    {/* Password */}
-                    <TextField
-                      className="input-text-login"
-                      id="outlined-password-input"
-                      label="Password"
-                      variant="outlined"
-                      type="password"
+                      minLength={6}
+                      maxLength={20}
                       value={password}
-                      autoComplete="current-password"
-                      size="small"
+                      width={100}
+                      placeholder='Enter Password'
                       onChange={(e) => setPassword(e.target.value)}
-                      style={{
-                        width: "80%",
-                        marginBottom: "5%",
-                        height: "5%",
-                      }}
-                      required
                     />
-                  </Grid>
-                  <Grid item xs={12} style={{ width: "70%" }}>
-                    {/* Signup Button */}
-                    <div className="login__customer__submitbtn">
-                      <Button type="submit" variant="contained" color="success" size="80%">
-                        Login
-                      </Button>
-                    </div>
-                  </Grid>
-                  <Grid item xs={6} style={{ width: "70%" }}>
-                    {/* Forgot Password */}
-                    <div className="forgot__password">
-                      <a href="/forgot-password">Forgot Password?</a>
-                    </div>
-                  </Grid>
-                  <Grid item xs={6} style={{ width: "70%" }}>
-                    {/* Remember Me */}
-                    <div className="option_div">
-                      <div className="remember__me">
-                        <input type="checkbox" />
-                        <span> Remember me</span>
-                      </div>
-                    </div>
-                  </Grid>
+                    <Form.Control.Feedback type='invalid'>
+                      *Please enter valid password above 6 characters
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
 
-                  <Grid item xs={12} style={{ width: "80%" }}>
-                    {/* Google Signup Button */}
-                    <div className="social__icons__login" id="signInDutton">
-                      <p> or Sign Up Using</p>
+                <div class='container d-flex justify-content-center'>
+                  <Button
+                    variant='success'
+                    type='submit'
+                    className=' mt-2 justify-content-center'
+                  >
+                    LOGIN
+                  </Button>
+                </div>
+                <div className='login__customer__form__line'>
+                  <div className='forgot__password'>
+                    <p>
+                      <Link to='/forgot-password'>Forgot Password?</Link>
+                    </p>
+                  </div>
+                  {/* Remember Me */}
+                  <div className='remember__me'>
+                    <Form.Check
+                      type='checkbox'
+                      label='Remember me'
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                    />
+                  </div>
+                </div>
 
-                      <GoogleLogin
-                        className="google__login"
-                        clientId={clientId}
-                        buttonText="Sign in with Google"
-                        onSuccess={onSuccess}
-                        onFailure={onFailure}
-                        cookiePolicy={"single_host_origin"}
-                        isSignedIn={true}
-                      />
-                    </div>
-                  </Grid>
-                  <Grid item xs={12} style={{ width: "100%" }}>
-                    {/* move to signup */}
-                    <div className="already__have__an__account">
-                      <p>
-                        Don't have an account? <Link to="/signup">Create</Link>
-                      </p>
-                    </div>
-                  </Grid>
-                </Grid>
-              </form>
+                <div className='social__icons__login' id='signInDutton'>
+                  <p> or Sign Up Using</p>
+
+                  <GoogleLogin
+                    className='google__login'
+                    buttonText='Sign in with Google'
+                    cookiePolicy={'single_host_origin'}
+                    isSignedIn={true}
+                  />
+                </div>
+
+                {/* Already have an account */}
+                <div className='already__have__an__account'>
+                  <p>
+                    Don't have an account? <Link to='/signup'>Create</Link>
+                  </p>
+                </div>
+              </Form>
             </div>
-          </Grid>
-        </Grid>
+          </Col>
+        </Row>
       </div>
     </Container>
   );

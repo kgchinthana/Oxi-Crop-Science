@@ -1,4 +1,4 @@
-import { Container } from "react-bootstrap";
+import { Container, Col, Row } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import CardGroup from "react-bootstrap/CardGroup";
 import agricultureServiceImg1 from "../images/soil.jpg";
@@ -13,76 +13,90 @@ import "../../styles/ourservices.css";
 
 function OurServices() {
   const hotline = "01234567891";
+  const cardStyle = { height: "100%" }; // Set a fixed height for the cards
+
   return (
     <>
       <section>
         <Container>
           <h2>Agriculture Services</h2>
-          <CardGroup className="cdGroup">
-            <Card>
-              <Card.Img variant="top" src={agricultureServiceImg1} />
-              <Card.Body>
-                <Card.Title>Soil Analysis</Card.Title>
-                <div className="cardText">
-                  In-depth soil analysis for precise nutrient management,
-                  ensuring optimal conditions for your crops.
-                </div>
-              </Card.Body>
-            </Card>
-            <Card>
-              <Card.Img variant="top" src={agricultureServiceImg2} />
-              <Card.Body>
-                <Card.Title>Pest Control</Card.Title>
-                <div className="cardText">
-                  Effective pest control solutions to protect your crops from
-                  infestations and ensure healthy growth.
-                </div>
-              </Card.Body>
-            </Card>
-            <Card>
-              <Card.Img variant="top" src={agricultureServiceImg3} />
-              <Card.Body>
-                <Card.Title>Water Management</Card.Title>
-                <div className="cardText">
-                  Advanced water management strategies to optimize irrigation
-                  and conserve water resources in agriculture.
-                </div>
-              </Card.Body>
-            </Card>
-          </CardGroup>
+          <Row>
+            <Col md={6} lg={4} className="mb-4">
+              <Card style={cardStyle}>
+                <Card.Img variant="top" src={agricultureServiceImg1} />
+                <Card.Body>
+                  <Card.Title>Soil Analysis</Card.Title>
+                  <div className="cardText">
+                    In-depth soil analysis for precise nutrient management,
+                    ensuring optimal conditions for your crops.
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={6} lg={4} className="mb-4">
+              <Card style={cardStyle}>
+                <Card.Img variant="top" src={agricultureServiceImg2} />
+                <Card.Body>
+                  <Card.Title>Pest Control</Card.Title>
+                  <div className="cardText">
+                    Effective pest control solutions to protect your crops from
+                    infestations and ensure healthy growth.
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={6} lg={4} className="mb-4">
+              <Card style={cardStyle}>
+                <Card.Img variant="top" src={agricultureServiceImg3} />
+                <Card.Body>
+                  <Card.Title>Water Management</Card.Title>
+                  <div className="cardText">
+                    Advanced water management strategies to optimize irrigation
+                    and conserve water resources in agriculture.
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
 
-          <CardGroup className="cdGroup">
-            <Card>
-              <Card.Img variant="top" src={agricultureServiceImg4} />
-              <Card.Body>
-                <Card.Title>Crop Monitoring</Card.Title>
-                <div className="cardText">
-                  Utilize cutting-edge technology for real-time crop
-                  monitoring, ensuring early detection of issues.
-                </div>
-              </Card.Body>
-            </Card>
-            <Card>
-              <Card.Img variant="top" src={agricultureServiceImg5} />
-              <Card.Body>
-                <Card.Title>Organic Farming</Card.Title>
-                <div className="cardText">
-                  Expert guidance on transitioning to sustainable and organic
-                  farming practices for healthier produce.
-                </div>
-              </Card.Body>
-            </Card>
-            <Card>
-              <Card.Img variant="top" src={agricultureServiceImg6} />
-              <Card.Body>
-                <Card.Title>Equipment Maintenance</Card.Title>
-                <div className="cardText">
-                  Comprehensive maintenance services for agricultural
-                  equipment, ensuring their longevity and efficiency.
-                </div>
-              </Card.Body>
-            </Card>
-          </CardGroup>
+          <Row>
+            <Col md={6} lg={4} className="mb-4">
+              <Card style={cardStyle}>
+                <Card.Img variant="top" src={agricultureServiceImg4} />
+                <Card.Body>
+                  <Card.Title>Crop Monitoring</Card.Title>
+                  <div className="cardText">
+                    Utilize cutting-edge technology for real-time crop
+                    monitoring, ensuring early detection of issues.
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={6} lg={4} className="mb-4">
+              <Card style={cardStyle}>
+                <Card.Img variant="top" src={agricultureServiceImg5} />
+                <Card.Body>
+                  <Card.Title>Organic Farming</Card.Title>
+                  <div className="cardText">
+                    Expert guidance on transitioning to sustainable and organic
+                    farming practices for healthier produce.
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={6} lg={4} className="mb-4">
+              <Card style={cardStyle}>
+                <Card.Img variant="top" src={agricultureServiceImg6} />
+                <Card.Body>
+                  <Card.Title>Equipment Maintenance</Card.Title>
+                  <div className="cardText">
+                    Comprehensive maintenance services for agricultural
+                    equipment, ensuring their longevity and efficiency.
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
         </Container>
       </section>
       <section>

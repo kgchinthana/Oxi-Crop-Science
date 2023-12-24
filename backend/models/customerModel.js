@@ -1,31 +1,18 @@
-const mysql = require("mysql2");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const Schema = mongoose.Schema;
 
 const customerSchema = new Schema({
-  fName: {
-    type: String,
-    required: true,
-  },
-  lName: {
-    type: String,
-    required: true,
-  },
-  address: {
-    type: String,
-    required: true,
-  },
-  phone_no: {
-    type: String,
-    required: true,
-  },
   email: {
     type: String,
     required: true,
-    unique:true,
-    match: [ /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, "Please enter a valid e-mail address"],
+    unique: true,
+    match: [
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+      'Please enter a valid e-mail address',
+    ],
   },
   password: {
     type: String,
@@ -33,13 +20,16 @@ const customerSchema = new Schema({
     minlength: 6,
     select: false,
   },
+  role: {
+    type: String,
+    required: true,
+  },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
-
 });
 
-customerSchema.pre("save", async function (next) {
-  if(!this.isModified("password")){
+customerSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
     next();
   }
   const salt = await bcrypt.genSalt(10);
@@ -58,12 +48,13 @@ customerSchema.methods.getSignedToken = function () {
 };
 
 customerSchema.methods.getResetPasswordToken = function () {
-  const resetToken = crypto.randomBytes(20).toString("hex");
+  const resetToken = crypto.randomBytes(20).toString('hex');
   this.resetPasswordToken = crypto
-  .createHash("sha256")
-  .update(resetToken)
-  .digest("hex");
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
   this.resetPasswordExpire = Date.now() + 10 * (60 * 1000);
   return resetToken;
 };
-module.exports = mongoose.model("customer", customerSchema);
+
+module.exports = mongoose.model('customer', customerSchema);

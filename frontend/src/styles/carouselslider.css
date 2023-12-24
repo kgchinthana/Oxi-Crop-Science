@@ -72,3 +72,22 @@
     border: none; 
     color: whitesmoke;
   }
+
+
+
+.transparent-input {
+    background-color: transparent;
+    border: 1px solid #ced4da;
+    color: #495057;
+}
+
+@media (max-width: 576px) {
+    /* Adjust styles for small screens */
+    .container {
+        margin-top: 10px;
+    }
+
+    .form-control {
+        width: 100%;
+    }
+}

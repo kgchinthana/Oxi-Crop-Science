@@ -38,7 +38,8 @@ exports.login = async (req, res) => {
                     httpOnly: true
                 }
                 res.cookie('userSave', token, cookieOptions);
-                res.status(200).json({ message: 'User logged in successfully' });
+                const data = {email: results[0].Email, role: results[0].Role};
+                res.status(200).json({data, message: 'User logged in successfully' });
             }
         })
     } catch (err) {
@@ -46,22 +47,20 @@ exports.login = async (req, res) => {
     }
 }
 exports.register = (req, res) => {
-    const { name, contact, address, email, password, passwordConfirm } = req.body;
+    const {  email, password } = req.body;
     database.query('SELECT Email from Customer WHERE Email = ?', [email], async (err, results) => {
         if (err) {
             console.log(err);
         } else {
             if (results.length > 0) {
               return res.status(401).json({ error: 'Customer already exist' });
-            } else if (password != passwordConfirm) {
-                
-                return res.status(401).json({ error: 'Password do not match'  });             
             }
+         
         }
 
         let hashedPassword = await bcrypt.hash(password, 8);
 
-        database.query('INSERT INTO Customer SET ?', { CustomerName: name, CustomerContact: contact, Address: address, Email: email, Password: hashedPassword }, (err, results) => {
+        database.query('INSERT INTO Customer SET ?', { Email: email, Password: hashedPassword, role: "customer" }, (err, results) => {
             if (err) {
                 console.log(err);
             } else {
